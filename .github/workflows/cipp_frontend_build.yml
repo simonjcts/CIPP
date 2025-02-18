@@ -6,6 +6,9 @@ on:
       - main
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
   build:
     if: github.event.repository.fork == false
@@ -15,11 +18,11 @@ jobs:
     steps:
       # Checkout the repository
       - name: Checkout Code
-        uses: actions/checkout@v4.2.2
+        uses: actions/checkout@v3
 
       # Set up Node.js
       - name: Set up Node.js
-        uses: actions/setup-node@v4.2.0
+        uses: actions/setup-node@v3
         with:
           node-version: '20.18.1'
 
@@ -40,10 +43,11 @@ jobs:
 
       # Upload to Azure Blob Storage
       - name: Azure Blob Upload
-        uses: LanceMcCarthy/Action-AzureBlobUpload@v3.3.1
+        uses: LanceMcCarthy/Action-AzureBlobUpload@v3.3.0
         with:
           connection_string: ${{ secrets.AZURE_CONNECTION_STRING }}
           container_name: cipp
           source_folder: build/
           destination_folder: /
           delete_if_exists: true
+
